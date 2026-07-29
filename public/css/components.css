@@ -1,0 +1,1121 @@
+/* Reusable UI components */
+
+
+/* ── Pages & Containers ──────────────────────────────────────────────────── */
+.page--wide .container {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.page--narrow .container {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 640px;
+}
+
+/* ── Card ──────────────────────────────────────────────────── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: var(--color-border);
+}
+
+/* ── Project card ──────────────────────────────────────────── */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.project-card:hover {
+  border-color: rgba(86, 211, 100, 0.3);
+  box-shadow: var(--shadow-card), 0 0 0 1px var(--color-accent-soft);
+}
+
+.project-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.project-card__category {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-left: auto;
+}
+
+.project-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.project-card__link {
+  color: var(--color-text);
+  transition: color 0.15s;
+}
+
+.project-card__link:hover { color: var(--color-accent); }
+
+.project-card__desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.project-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.project-card__date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ── Category card ─────────────────────────────────────────── */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  border-color: rgba(86, 211, 100, 0.35);
+  background: var(--color-surface-2);
+  transform: translateY(-2px);
+}
+
+.category-card__icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+}
+
+.category-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.category-card__desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.category-card__count {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* ── Status pill ───────────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2em 0.65em;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.pill--live {
+  color: var(--color-text-muted);
+  background: #E7F8F0;
+  border-color: #A8E6C8;
+}
+
+.pill--progress {
+  color: var(--color-text-muted);
+  background: #FFF7E6;
+  border-color: #F6D28B;
+}
+
+.pill--planned {
+  color: var(--color-planned);
+  background: #EAF1FF;
+  border-color: #BFD2FF;
+}
+
+.pill--archived {
+  color: var(--color-archived);
+  background: #FCECEC;
+  border-color: #F3B6B9;
+}
+
+.pill--internal {
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  border-color: var(--color-border);
+}
+
+.pill--customer {
+  color: #79c0ff;
+  background: rgba(121, 192, 255, 0.3);
+  border-color: rgba(121, 192, 255, 0.2);
+}
+
+/* ── Tags ──────────────────────────────────────────────────── */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2em 0.6em;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.tag--active {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border-color: rgba(86, 211, 100, 0.25);
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.btn--primary {
+  background: var(--color-surface-2);
+  color: #070b0d;
+  border-color: var(--color-accent);
+}
+
+.btn--primary:hover {
+  background: var(--color-accent-strong);
+  border-color: var(--color-accent-strong);
+  color: #fff;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
+.btn--sm {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* ── Section header ────────────────────────────────────────── */
+.section-header {
+  margin-bottom: var(--space-8);
+}
+
+.section-header__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+
+.section-header__heading {
+  color: var(--color-text);
+}
+
+.section-header__description {
+  margin-top: var(--space-3);
+  max-width: 56ch;
+  color: var(--color-text-muted);
+}
+
+/* ── Code block ────────────────────────────────────────────── */
+.code-block {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+
+.code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.code-block__lang {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.code-block__pre {
+  padding: var(--space-5);
+  overflow-x: auto;
+  margin: 0;
+}
+
+.code-block__code {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--color-text-soft);
+  background: none;
+  padding: 0;
+}
+
+/* ── Quick links ───────────────────────────────────────────── */
+.quick-links__heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.quick-links__item {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.quick-links__item:hover {
+  color: var(--color-accent);
+  border-color: rgba(86, 211, 100, 0.3);
+  background: var(--color-accent-glow);
+}
+
+/* ── Experimental notice ───────────────────────────────────── */
+.experimental-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(227, 179, 65, 0.06);
+  border: 1px solid rgba(227, 179, 65, 0.2);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-8);
+}
+
+.experimental-notice__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.experimental-notice p {
+  font-size: 0.875rem;
+  color: rgba(227, 179, 65, 0.85);
+}
+
+/* ── Endpoint example ──────────────────────────────────────── */
+.endpoint-example {
+  margin-bottom: var(--space-8);
+}
+
+.endpoint-example__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.endpoint-method {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2em 0.6em;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+}
+
+.endpoint-method--get {
+  background: rgba(86, 211, 100, 0.12);
+  color: var(--color-accent);
+}
+
+.endpoint-method--post {
+  background: rgba(121, 192, 255, 0.12);
+  color: #79c0ff;
+}
+
+.endpoint-method--delete {
+  background: rgba(248, 81, 73, 0.12);
+  color: #f85149;
+}
+
+.endpoint-path {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  background: none;
+  padding: 0;
+}
+
+.endpoint-example__desc {
+  margin-bottom: var(--space-4);
+  font-size: 0.875rem;
+}
+
+/* ── Breadcrumb ────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  font-size: 0.8rem;
+}
+
+.breadcrumb__link {
+  color: var(--color-text-muted);
+  transition: color 0.15s;
+}
+
+.breadcrumb__link:hover { color: var(--color-accent); }
+
+.breadcrumb__sep {
+  color: var(--color-border);
+}
+
+.breadcrumb__current {
+  color: var(--color-text-soft);
+}
+
+/* ── Form fields ───────────────────────────────────────────────
+   Block:    .form-group
+   Elements: .form-group__label   .form-group__input
+             .form-group__textarea .form-group__error
+             .form-group__hint    .form-group__optional
+             .form-group__divider
+   ──────────────────────────────────────────────────────────── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-group__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+
+.form-group__optional {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  font-size: 0.8em;
+  margin-left: var(--space-1);
+}
+
+.form-group__input,
+.form-group__textarea {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group__input::placeholder,
+.form-group__textarea::placeholder {
+  color: var(--color-text-soft);
+}
+
+.form-group__input:focus,
+.form-group__textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.form-group__textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
+
+.form-group__error {
+  font-size: 0.8rem;
+  color: var(--color-archived);
+}
+
+.form-group__hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.form-group__divider {
+  border: none;
+  border-top: 1px solid var(--color-border-soft);
+  margin: var(--space-2) 0;
+}
+
+/* ── Panel ─────────────────────────────────────────────────────
+   A card with a structured header + body. Apply .panel alongside
+   .card to zero card's default padding.
+   Block:    .panel
+   Elements: .panel__header .panel__title .panel__subtitle
+             .panel__body   .panel__desc
+   Modifier: .panel__desc--clamped (5-line clamp; JS toggles it off)
+   ──────────────────────────────────────────────────────────── */
+.panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.panel__header {
+  padding: var(--space-4) var(--space-6) var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.panel__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.panel__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+  min-height: 1em;
+}
+
+.panel__body {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.panel__desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.panel__desc--clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+}
+
+/* ── Layout helpers ────────────────────────────────────────────
+   .col-2  — 2-column grid; collapses to 1-column below 860px
+   .stack  — flex column with gap; use for left/right columns
+   ──────────────────────────────────────────────────────────── */
+.col-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .col-2 { grid-template-columns: 1fr; }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Collapsible ───────────────────────────────────────────────
+   Block:    .collapsible
+   Modifier: .collapsible--open  (JS-toggled)
+   Elements: .collapsible__toggle .collapsible__chevron
+             .collapsible__body   .collapsible__content
+   Modifier: .collapsible__content--muted
+   ──────────────────────────────────────────────────────────── */
+.collapsible__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+
+.collapsible__toggle:hover {
+  background: var(--color-surface-2);
+}
+
+.collapsible__chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: transform 0.2s ease;
+}
+
+.collapsible--open .collapsible__chevron {
+  transform: rotate(90deg);
+}
+
+.collapsible__body {
+  display: none;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 0 var(--space-6) var(--space-5);
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.collapsible--open .collapsible__body {
+  display: block;
+}
+
+.collapsible__content {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.collapsible__content--muted {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* ── Embed ─────────────────────────────────────────────────────
+   Block:    .embed
+   Modifier: .embed--16-9  (56.25% padding-bottom aspect ratio)
+   ──────────────────────────────────────────────────────────── */
+.embed { display: block; }
+
+.embed--16-9 {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: #000;
+}
+
+.embed--16-9 iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ── Chip ──────────────────────────────────────────────────────
+   Editable tag with remove button. Distinct from read-only .tag.
+   Block:      .chip
+   Element:    .chip__remove
+   Containers: .chip-list       (flex-wrap row of chips)
+               .chip-input-row  (input + add-button inline)
+   ──────────────────────────────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.2em var(--space-2) 0.2em var(--space-3);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+  border: 1px solid var(--color-accent-glow);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-accent-strong);
+  font-size: 0.875rem;
+  line-height: 1;
+  border-radius: 50%;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.1s;
+}
+
+.chip__remove:hover { opacity: 1; }
+.chip__remove:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-height: 0;
+}
+
+.chip-list:empty { display: none; }
+
+.chip-input-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.chip-input-row .form-group__input { flex: 1; }
+
+/* ── Status block ──────────────────────────────────────────────
+   Centered success/info/error message shown after a form action.
+   Block:     .status
+   Elements:  .status__icon .status__heading .status__body
+   Modifiers: .status__icon--success  .status__icon--info
+   ──────────────────────────────────────────────────────────── */
+.status {
+  text-align: center;
+  padding: var(--space-6) 0 var(--space-4);
+}
+
+.status__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-3);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.status__icon--success { background: var(--color-live); }
+.status__icon--info    { background: var(--color-accent); }
+
+.status__heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.status__body {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Expand toggle ─────────────────────────────────────────────
+   "Click to Expand / Show Less" link below a .panel__desc--clamped.
+   JS removes .panel__desc--clamped to expand, re-adds to collapse.
+   ──────────────────────────────────────────────────────────── */
+.expand-toggle {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  transition: opacity 0.15s;
+}
+
+.expand-toggle:hover { opacity: 0.75; color: var(--color-accent); }
+
+/* ── External link ─────────────────────────────────────────────
+   Styled outbound link with gap for an ↗ or similar indicator.
+   ──────────────────────────────────────────────────────────── */
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  transition: opacity 0.15s;
+}
+
+.external-link:hover { opacity: 0.75; color: var(--color-accent); }
+
+
+
+/* ── Table ───────────────────────────────────────────────────
+   Styled header and body cells
+   ──────────────────────────────────────────────────────────── */
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  max-height: 400px;
+  overflow: auto;
+}
+
+.table > thead > tr > th { 
+  background-color: var(--color-accent);
+  color: var(--color-text);
+  text-align: left;
+  padding: var(--space-3) var(--space-1);
+}
+.table > tbody > tr > td {
+  border-top: 1px solid var(--color-border-soft);
+  padding: var(--space-1) var(--space-1);
+  text-align: left;
+}
+.table > tbody > tr:nth-child(even) > td {
+  background-color: var(--color-surface);
+}
+
+
+
+/* ── Utility ───────────────────────────────────────────────────
+   .hidden lives here so JS can toggle it on any element.
+   ──────────────────────────────────────────────────────────── */
+.hidden {
+  display: none !important;
+}
+
+/* ── Toast notifications ───────────────────────────────────────
+   Fixed-position feedback toasts. Add a #toastContainer div
+   near the end of any page template, then call showToast() from
+   the page's JS (see public/js/smart-card.js for the pattern).
+
+   Usage in HTML:
+     <div id="toastContainer" class="toast-container"
+          role="status" aria-live="polite"></div>
+
+   Usage in JS:
+     toast.className = `toast toast--${type}`;  // type: success | error | warning | info
+     toast.classList.add('toast--visible');      // show
+     toast.classList.remove('toast--visible');   // dismiss
+   ──────────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 999;
+  pointer-events: none;
+}
+
+.toast {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: var(--shadow-medium);
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: auto;
+}
+
+.toast.toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.toast--success { background: var(--color-live); }
+.toast.toast--error   { background: var(--color-archived); }
+.toast.toast--warning { background: var(--color-progress); }
+.toast.toast--info    { background: var(--color-accent); }
+
+/* ── Method badge ─────────────────────────────────────────────
+   Small colored pill for HTTP method labels.
+   Used in sidebar rows, URL blocks, and response panels.
+   ──────────────────────────────────────────────────────────── */
+.method-badge {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.18em 0.5em;
+  border-radius: 3px;
+  flex-shrink: 0;
+  min-width: 36px;
+  text-align: center;
+  display: inline-block;
+}
+.method-badge--get    { background: #E6F6FA; color: #0D7893; }
+.method-badge--post   { background: #E6F9EF; color: #0D7A51; }
+.method-badge--patch  { background: #FFF3E0; color: #B45309; }
+.method-badge--put    { background: #EDE9FE; color: #6D28D9; }
+.method-badge--delete { background: #FEE2E2; color: #B91C1C; }
+
+/* ── URL block ────────────────────────────────────────────────
+   Dark card displaying the full request URL with method pill
+   and syntax-highlighted path parameters.
+   ──────────────────────────────────────────────────────────── */
+.url-block {
+  display: flex;
+  align-items: center;
+  gap: 0.6875rem;
+  background: #0F2238;
+  border-radius: var(--radius-md);
+  padding: 0.6875rem 1.125rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.url-block__method {
+  font-size: 0.7rem;
+  padding: 0.28em 0.65em;
+}
+.url-block__base { font-family: var(--font-mono); font-size: 0.8rem; color: #5E7A96; white-space: nowrap; }
+.url-block__path { font-family: var(--font-mono); font-size: 0.8rem; color: #D8E8F5; white-space: nowrap; }
+.url-block__param { color: var(--color-accent-glow); }
+
+/* ── Scope badge ──────────────────────────────────────────────
+   Tiny mono pill showing an OAuth2 scope name.
+   ──────────────────────────────────────────────────────────── */
+.scope-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  background: var(--color-accent);
+  color: white;
+  padding: 0.18em 0.55em;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+}
+
+/* ── Capability badge ─────────────────────────────────────────
+   Endpoint-level visibility label (Public / Internal / Private).
+   ──────────────────────────────────────────────────────────── */
+.cap-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.22em 0.6em;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+}
+.cap-badge--public   { background: #E6F9EF; color: #0D7A51; border: 1px solid #BBF7D0; }
+.cap-badge--internal { background: #FFF3E0; color: #B45309; border: 1px solid #FDE68A; }
+.cap-badge--private  { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+
+/* ── Private param tag ────────────────────────────────────────
+   Inline red label for parameters flagged as private/internal
+   in data/vimeo-private-endpoints.json.
+   ──────────────────────────────────────────────────────────── */
+.priv-tag {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #FEE2E2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  padding: 0.15em 0.45em;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ── API breadcrumb ─────────────────────────────────────────────
+   Navigation trail at the top of a docs panel (API Reference /
+   Playground only — built dynamically by vimeo-api-reference.js).
+   For the general page breadcrumb (e.g. project-detail.ejs), see
+   .breadcrumb / .breadcrumb__link / .breadcrumb__current above.
+   ──────────────────────────────────────────────────────────── */
+.api-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.125rem;
+  flex-wrap: wrap;
+}
+.api-breadcrumb__sep { color: var(--color-text-soft); }
+
+/* ── Empty state ──────────────────────────────────────────────
+   Centered placeholder shown before the user selects an item, or
+   when a list has nothing to show. Add --framed for the boxed
+   dashed-border look used on category index pages.
+   ──────────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem;
+  height: 100%;
+  min-height: 300px;
+  color: var(--color-text-muted);
+}
+.empty-state--framed {
+  height: auto;
+  min-height: 0;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-elevated);
+  padding: var(--space-16) var(--space-8);
+}
+.empty-state__icon {
+  width: 44px;
+  height: 44px;
+  background: var(--color-surface-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4);
+  color: var(--color-text-soft);
+}
+.empty-state__heading {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+.empty-state__body {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  max-width: 32ch;
+}
+
+/* ── Vimeo auth widget ───────────────────────────────────────
+   Nav-level Vimeo connect / connected indicator.
+   ──────────────────────────────────────────────────────────── */
+.vimeo-auth-widget {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.vimeo-auth-widget__connected {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.vimeo-auth-widget__name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Marks a session built from VIMEO_TOKEN by middleware/dev-token-auth.js
+   rather than a real OAuth login. Development only. */
+.vimeo-auth-widget__dev-badge {
+  flex-shrink: 0;
+  padding: 1px var(--space-2);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.vimeo-auth-widget__logout-form { margin: 0; }
+
+.vimeo-auth-widget__disconnect {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+.vimeo-auth-widget__disconnect:hover { color: var(--color-text); }
+
+/* On mobile, hide the connected state (the name truncates poorly) and
+   collapse the connect button into the hamburger menu area. */
+@media (max-width: 640px) {
+  .vimeo-auth-widget { display: none; }
+}
+
+/* ── Auth-required empty state ───────────────────────────────
+   Modifier for the empty-state block used on pages that need
+   the user to connect their Vimeo account before proceeding.
+   ──────────────────────────────────────────────────────────── */
+.vimeo-auth-required {
+  min-height: 200px;
+  padding: var(--space-10) var(--space-6);
+}
+.vimeo-auth-required .empty-state__body {
+  max-width: 44ch;
+  margin-bottom: var(--space-5);
+}

@@ -1,0 +1,17 @@
+<%
+  // Props: project (object from projects.js)
+%>
+<article class="card project-card">
+  <div class="project-card__meta">
+    <%- include('./status-pill', { status: project.status }) %>
+    <span class="project-card__category"><%= project.category %></span>
+  </div>
+  <h3 class="project-card__title">
+    <a href="<%= project.href %>" class="project-card__link"><%= project.title %></a>
+  </h3>
+  <p class="project-card__desc"><%= project.description %></p>
+  <div class="project-card__footer">
+    <%- include('./tag-list', { tags: project.tags }) %>
+    <span class="project-card__date"><%= formatDate(project.updatedAt) %></span>
+  </div>
+</article>

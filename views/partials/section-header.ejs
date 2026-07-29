@@ -1,0 +1,12 @@
+<%
+  // Props: label (small overline text), heading, description (optional)
+%>
+<div class="section-header">
+  <% if (locals.label) { %>
+    <p class="section-header__label"><%= label %></p>
+  <% } %>
+  <h2 class="section-header__heading"><%= heading %></h2>
+  <% if (locals.description) { %>
+    <p class="section-header__description"><%= description %></p>
+  <% } %>
+</div>

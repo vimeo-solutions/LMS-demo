@@ -1,0 +1,50 @@
+<div class="page page--vimeo-api-reference">
+  <div class="container">
+
+    <!-- Page header -->
+    <div class="page-hero">
+      <p class="hero__overline">API Docs</p>
+      <h1 class="page-hero__heading">Vimeo API Reference</h1>
+      <p class="page-hero__desc">Browse and search Vimeo API endpoints organized by category.  Filter private features unavailable to customer API apps.  More filtering and search capabilities to come.  OAuth authentication to browse and test against your own apps & tokens is coming, too.</p>
+    </div>
+  <div class="api-shell">
+
+
+    <aside class="api-sidebar" id="api-sidebar">
+      <div class="api-sidebar__search">
+        <div class="form-group" style="margin:0">
+          <input class="form-group__input" type="text" id="api-search" placeholder="Search endpoints…" autocomplete="off" />
+        </div>
+      </div>
+      <div class="api-sidebar__filter">
+        <label class="api-filter-label">
+          <input type="checkbox" id="api-hide-private" class="api-filter-checkbox" />
+          <span>Hide private endpoints</span>
+        </label>
+      </div>
+      <nav id="api-nav" class="api-nav"></nav>
+    </aside>
+
+    <main class="api-main" id="api-main">
+      <div class="empty-state" id="api-empty">
+        <div class="empty-state__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <p class="empty-state__heading">Select an endpoint</p>
+        <p class="empty-state__body">Choose a method from the sidebar to view its documentation.</p>
+      </div>
+      <div id="api-doc" class="api-doc-inner hidden"></div>
+    </main>
+
+  </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container">
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>window.VIMEO_CONNECTED = <%= !!locals.vimeoAuth %>;</script>

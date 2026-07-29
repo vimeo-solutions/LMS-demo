@@ -1,0 +1,26 @@
+{
+  "name": "vimeo-home",
+  "version": "1.0.0",
+  "description": "Personal project hub for internal tools, demos, API docs, and experiments.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "lint": "echo \"No linter configured yet\"",
+    "test": "echo \"No tests configured yet\""
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.17",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
+    "helmet": "^7.1.0",
+    "memorystore": "^1.6.8",
+    "multer": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

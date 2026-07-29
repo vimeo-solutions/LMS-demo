@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example Static Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="tool-header">
+    <a href="/" class="tool-header__back">← Back to Hub</a>
+    <h1>Example Static Tool</h1>
+  </header>
+
+  <main class="tool-main">
+    <section class="tool-card">
+      <h2>JSON Formatter</h2>
+      <p>Paste JSON below to format and validate it.</p>
+
+      <textarea id="input" placeholder='{"example": true}'></textarea>
+      <div class="tool-actions">
+        <button id="formatBtn">Format</button>
+        <button id="clearBtn" class="secondary">Clear</button>
+      </div>
+      <pre id="output"></pre>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

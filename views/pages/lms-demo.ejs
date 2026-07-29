@@ -1,0 +1,175 @@
+<div class="page page--lms-demo">
+
+  <div class="lms-shell">
+
+    <!-- Fictional LMS topbar -->
+    <header class="lms-topbar">
+      <div class="lms-topbar__brand">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+        Meridian Learning
+      </div>
+
+      <div class="lms-topbar__course" id="lms-course-title">No course loaded</div>
+
+      <div class="lms-topbar__actions">
+        <label class="btn btn--sm lms-topbar__btn">
+          Upload SCORM
+          <input type="file" id="lms-file-input" accept=".zip" style="display:none">
+        </label>
+        <button class="btn btn--sm lms-topbar__btn" id="lms-clear-btn" type="button">
+          Clear Entry
+        </button>
+      </div>
+
+      <div class="lms-topbar__user">
+        <span class="lms-avatar">AC</span>
+        <span class="lms-topbar__user-name">Aldous Chuxley</span>
+      </div>
+    </header>
+
+    <!-- Three-column workspace -->
+    <div class="lms-workspace">
+
+      <!-- Left: Learner profile + course list -->
+      <aside class="lms-sidebar">
+
+        <div class="lms-learner-card">
+          <div class="lms-avatar lms-avatar--lg">AC</div>
+          <div>
+            <div class="lms-learner-card__name">Aldous Chuxley</div>
+            <div class="lms-learner-card__role">Product Manager</div>
+          </div>
+        </div>
+
+        <div class="lms-sidebar__label">My Courses</div>
+
+        <div id="lms-no-course" class="lms-sidebar__empty">
+          No courses enrolled.<br>Upload a SCORM package to begin.
+        </div>
+
+        <div id="lms-course-item" class="lms-course-item hidden">
+          <svg class="lms-course-item__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M9 9h6M9 13h6M9 17h4"/>
+          </svg>
+          <div>
+            <div class="lms-course-item__title" id="lms-course-item-title">—</div>
+            <div class="lms-course-item__status" id="lms-course-item-status">Not Started</div>
+          </div>
+        </div>
+
+        <div class="lms-sidebar__label lms-sidebar__label--top">About This Demo</div>
+        <p class="lms-sidebar__about">
+          Upload any Vimeo SCORM export to simulate how an enterprise LMS (Workday,
+          Cornerstone, SAP) receives and tracks learning data. Quiz scores and
+          completion status update live as you watch.
+        </p>
+      </aside>
+
+      <!-- Center: SCORM iframe -->
+      <main class="lms-content">
+
+        <!-- Drop zone (visible before upload) -->
+        <div class="lms-drop-zone" id="lms-drop-zone">
+          <div class="empty-state">
+            <div class="empty-state__icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <p class="empty-state__heading">Load a SCORM Package</p>
+            <p class="empty-state__body">
+              Export a SCORM package from a Vimeo interactive video, then drop the
+              <code>.zip</code> file here — or use the Upload button above.
+            </p>
+            <label class="btn btn--primary lms-drop-zone__btn" style="margin-top: var(--space-4); cursor: pointer;">
+              Choose File
+              <input type="file" id="lms-file-input-center" accept=".zip" style="display:none">
+            </label>
+            <div class="lms-samples" id="lms-samples"></div>
+          </div>
+          <div class="lms-drop-zone__overlay hidden" id="lms-drop-overlay">Drop to upload</div>
+        </div>
+
+        <!-- SCORM content iframe (hidden until a course is loaded) -->
+        <iframe
+          class="lms-iframe hidden"
+          id="lms-iframe"
+          title="Course Content"
+          allowfullscreen
+        ></iframe>
+
+      </main>
+
+      <!-- Right: Live Gradebook -->
+      <aside class="lms-gradebook">
+
+        <div class="lms-gradebook__header">Live Gradebook</div>
+
+        <div class="lms-stat-group">
+          <div class="lms-stat">
+            <div class="lms-stat__label">Status</div>
+            <div class="lms-stat__value">
+              <span class="lms-status-chip lms-status-chip--neutral" id="lms-status-chip">Not Started</span>
+            </div>
+          </div>
+          <div class="lms-stat">
+            <div class="lms-stat__label">Score</div>
+            <div class="lms-stat__value" id="lms-score">—</div>
+          </div>
+          <div class="lms-stat">
+            <div class="lms-stat__label">Result</div>
+            <div class="lms-stat__value" id="lms-result">—</div>
+          </div>
+          <div class="lms-stat">
+            <div class="lms-stat__label">Session Time</div>
+            <div class="lms-stat__value lms-stat__value--mono" id="lms-time">—</div>
+          </div>
+        </div>
+
+        <div class="lms-retake-area hidden" id="lms-retake-area">
+          <button class="btn btn--sm lms-retake-btn" id="lms-retake-btn" type="button">↺ Retake Course</button>
+        </div>
+
+        <div class="lms-gradebook__section-label">Quiz Responses</div>
+
+        <p class="lms-interactions-empty" id="lms-no-interactions">
+          Responses will appear here as you answer quiz questions.
+        </p>
+
+        <table class="table lms-interactions-table hidden" id="lms-interactions-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Response</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody id="lms-interactions-body"></tbody>
+        </table>
+
+        <div class="lms-gradebook__footer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          This data is simultaneously reported to Vimeo's learner analytics dashboard.
+        </div>
+
+      </aside>
+
+    </div><!-- /.lms-workspace -->
+
+  </div><!-- /.lms-shell -->
+
+</div><!-- /.page--lms-demo -->
+
+<div class="toast-container" id="toast-container">
+  <div class="toast" id="toast"></div>
+</div>

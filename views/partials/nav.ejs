@@ -1,0 +1,21 @@
+<header class="site-header">
+  <nav class="nav">
+    <a href="/" class="nav__logo">
+      <span class="nav__logo-mark">▸</span>
+      <span class="nav__logo-text"><%= process.env.FIRST_NAME ? process.env.FIRST_NAME + '\'s' : "" %> Project Hub</span>
+    </a>
+
+    <ul class="nav__links" id="navLinks">
+      <li><a href="/demos" class="nav__link">Demos</a></li>
+      <li><a href="/api-docs" class="nav__link">API Docs</a></li>
+      <li><a href="/testing" class="nav__link">Testing</a></li>
+      <li><a href="/admin" class="nav__link">Admin</a></li>
+    </ul>
+
+    <%- include('vimeo-auth-widget') %>
+
+    <button class="nav__mobile-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>

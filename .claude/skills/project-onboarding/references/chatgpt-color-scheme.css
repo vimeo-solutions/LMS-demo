@@ -1,0 +1,117 @@
+:root {
+  /* Page backgrounds */
+  --color-bg-page: #F8FAFC;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-surface-muted: #F1F5F9;
+  --color-bg-surface-subtle: #F8FAFC;
+  --color-bg-elevated: #FFFFFF;
+
+  /* Text */
+  --color-text-primary: #0F2238;
+  --color-text-secondary: #526173;
+  --color-text-muted: #7A8899;
+  --color-text-faint: #A0AEC0;
+  --color-text-inverse: #FFFFFF;
+
+  /* Primary accent: blue / teal */
+  --color-primary: #1189A7;
+  --color-primary-hover: #0D7893;
+  --color-primary-active: #09677E;
+  --color-primary-soft: #E6F6FA;
+  --color-primary-border: #A7DCE8;
+
+  /* Secondary blue used for links/icons */
+  --color-link: #0B73A8;
+  --color-link-hover: #075E8A;
+  --color-icon: #1086A6;
+  --color-icon-muted: #6B8798;
+
+  /* Borders and dividers */
+  --color-border: #D8E1EA;
+  --color-border-subtle: #E7EDF3;
+  --color-border-strong: #B8C7D6;
+  --color-divider: #E2E8F0;
+
+  /* Buttons */
+  --color-button-primary-bg: #1189A7;
+  --color-button-primary-bg-hover: #0D7893;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-secondary-bg: #FFFFFF;
+  --color-button-secondary-bg-hover: #F1F7FA;
+  --color-button-secondary-text: #0F2238;
+  --color-button-secondary-border: #C7D4E2;
+
+  /* Inputs / forms */
+  --color-input-bg: #FFFFFF;
+  --color-input-border: #D2DCE8;
+  --color-input-border-focus: #1189A7;
+  --color-input-placeholder: #94A3B8;
+  --color-input-text: #172A3F;
+
+  /* Cards */
+  --color-card-bg: #FFFFFF;
+  --color-card-bg-hover: #F9FCFD;
+  --color-card-border: #DDE6EF;
+  --color-card-shadow: rgba(15, 34, 56, 0.08);
+
+  /* Navigation */
+  --color-nav-bg: rgba(255, 255, 255, 0.92);
+  --color-nav-border: #E1E8F0;
+  --color-nav-link: #24364A;
+  --color-nav-link-hover: #0F2238;
+  --color-nav-link-active: #1189A7;
+  --color-nav-active-underline: #1189A7;
+
+  /* Badges / tags */
+  --color-badge-bg: #F1F5F9;
+  --color-badge-border: #CBD5E1;
+  --color-badge-text: #334155;
+
+  --color-badge-primary-bg: #E6F6FA;
+  --color-badge-primary-text: #0B6F89;
+  --color-badge-primary-border: #B8E3EC;
+
+  /* Status colors */
+  --color-success: #12A36A;
+  --color-success-soft: #E7F8F0;
+  --color-success-border: #A8E6C8;
+
+  --color-warning: #D97706;
+  --color-warning-soft: #FFF7E6;
+  --color-warning-border: #F6D28B;
+
+  --color-danger: #DC3F45;
+  --color-danger-soft: #FCECEC;
+  --color-danger-border: #F3B6B9;
+
+  --color-info: #2563EB;
+  --color-info-soft: #EAF1FF;
+  --color-info-border: #BFD2FF;
+
+  /* Dashboard/chart colors */
+  --color-chart-blue: #3B82F6;
+  --color-chart-green: #22C55E;
+  --color-chart-grid: #E5EAF0;
+  --color-chart-axis: #8291A5;
+
+  /* Code / terminal panel */
+  --color-code-bg: #FFFFFF;
+  --color-code-border: #DDE6EF;
+  --color-code-text: #263548;
+  --color-code-muted: #6B7280;
+  --color-code-accent: #1189A7;
+  --color-code-symbol: #CAD3DF;
+
+  /* Mac-style window controls */
+  --color-window-red: #FF5F57;
+  --color-window-yellow: #FFBD2E;
+  --color-window-green: #28C840;
+
+  /* Focus rings */
+  --color-focus-ring: rgba(17, 137, 167, 0.28);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 34, 56, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 34, 56, 0.08);
+  --shadow-lg: 0 18px 48px rgba(15, 34, 56, 0.10);
+}

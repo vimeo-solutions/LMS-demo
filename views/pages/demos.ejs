@@ -1,0 +1,26 @@
+<div class="page page--index">
+
+  <div class="page-hero container">
+    <p class="hero__overline">Demos &amp; Prototypes</p>
+    <h1 class="page-hero__heading">Vimeo Demos</h1>
+    <p class="page-hero__desc">Client-facing demos, proof-of-concepts, and sales engineering prototypes.</p>
+  </div>
+
+  <div class="container">
+
+    <% if (projects.length > 0) { %>
+      <div class="card-grid">
+        <% projects.forEach(function(project) { %>
+          <%- include('../partials/project-card', { project }) %>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state empty-state--framed">
+        <span class="empty-state__icon">◈</span>
+        <h3 class="empty-state__heading">No customer demos yet</h3>
+        <p class="empty-state__body">Add projects to <code>data/projects.js</code> with <code>category: "Demos"</code>.</p>
+      </div>
+    <% } %>
+
+  </div>
+</div>

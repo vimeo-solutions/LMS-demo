@@ -1,0 +1,126 @@
+<div class="page page--vimeo-embeds">
+  <div class="container">
+
+    <!-- Page header -->
+    <div class="page-hero">
+      <p class="hero__overline">Demos</p>
+      <h1 class="page-hero__heading">The Power of Vimeo Embeds</h1>
+      <p class="page-hero__desc">Load any Vimeo video to explore the structured metadata it generates — the VideoObject schema and Open Graph tags that help search engines and AI answer engines understand your content. Watch Player SDK events stream in live as you interact with the video.</p>
+    </div>
+
+<% if (locals.vimeoAuth) { %>
+
+    <!-- Video ID input -->
+    <div class="card">
+      <form id="loadForm" class="url-bar" novalidate>
+        <div class="url-bar__row">
+          <input
+            type="text"
+            id="videoInput"
+            class="url-bar__input"
+            placeholder="Enter a Vimeo video ID or URL…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" class="btn btn--primary" id="loadBtn">Load Video</button>
+        </div>
+        <p id="inputError" class="form-group__error hidden"></p>
+      </form>
+    </div>
+
+    <!-- Content — hidden until a video is loaded -->
+    <section id="contentSection" class="hidden">
+      <div class="stack">
+
+        <!-- Player -->
+        <div class="card panel">
+          <div class="panel__header">
+            <h2 class="panel__title" id="videoTitle">Video</h2>
+            <p class="panel__subtitle" id="videoSubtitle"></p>
+          </div>
+          <div class="panel__body">
+            <div class="embed embed--16-9">
+              <div id="playerContainer"></div>
+            </div>
+            <a id="vimeoLink" href="#" target="_blank" rel="noopener noreferrer" class="external-link right">
+              <b>Open in Vimeo ↗</b>
+            </a>
+          </div>
+        </div>
+
+        <!-- JSON-LD VideoObject (collapsible) -->
+        <div class="card panel collapsible" id="jsonldPanel">
+          <div class="collapsible__toggle" id="jsonldToggle" role="button" tabindex="0" aria-expanded="false">
+            <h2 class="panel__title">JSON-LD VideoObject Schema</h2>
+            <span class="collapsible__chevron" aria-hidden="true">›</span>
+          </div>
+          <div class="collapsible__body">
+            <div class="panel__body">
+              <p class="metadata-section__desc">This <code>application/ld+json</code> block is injected into the page <code>&lt;head&gt;</code> when the video loads. It is the primary structured data signal used by Google, Bing, and AI answer engines to understand a video's content, author, and context — enabling rich results and cited answers.</p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                    <th>Why it matters</th>
+                  </tr>
+                </thead>
+                <tbody id="schemaTableBody"></tbody>
+              </table>
+              <details class="jsonld-details" id="jsonldDetails">
+                <summary>View raw JSON-LD markup</summary>
+                <pre id="jsonldOutput" class="jsonld-code"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open Graph Tags (collapsible) -->
+        <div class="card panel collapsible" id="ogPanel">
+          <div class="collapsible__toggle" id="ogToggle" role="button" tabindex="0" aria-expanded="false">
+            <h2 class="panel__title">Open Graph Tags</h2>
+            <span class="collapsible__chevron" aria-hidden="true">›</span>
+          </div>
+          <div class="collapsible__body">
+            <div class="panel__body">
+              <p class="metadata-section__desc">These <code>&lt;meta&gt;</code> tags control how the video appears when shared on social platforms, messaging apps, and in rich link previews. The <code>og:video</code> tag enables inline autoplay on some platforms.</p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Property</th>
+                    <th>Content</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody id="ogTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Events (collapsible) -->
+        <div class="card panel collapsible" id="eventsSection">
+          <div class="collapsible__toggle" id="eventsToggle" role="button" tabindex="0" aria-expanded="false">
+            <h2 class="panel__title">Player Events</h2>
+            <span class="collapsible__chevron" aria-hidden="true">›</span>
+          </div>
+          <div class="collapsible__body">
+            <div class="panel__body">
+              <p class="metadata-section__desc">Live events fired by the <a href="https://developer.vimeo.com/player/sdk/reference#events" target="_blank" rel="noopener noreferrer" class="external-link">Vimeo Player SDK</a> as you interact with the video. <code>timeupdate</code> is throttled to one log entry per 5 seconds.</p>
+              <div id="eventLog" class="event-log"></div>
+              <p id="eventLogEmpty" class="collapsible__content collapsible__content--muted">No events yet — play the video to start capturing.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.stack -->
+    </section><!-- /#contentSection -->
+
+<% } else { %>
+    <%- include('../partials/vimeo-auth-required') %>
+<% } %>
+
+  </div><!-- /.container -->
+</div><!-- /.page -->
+
+<div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>

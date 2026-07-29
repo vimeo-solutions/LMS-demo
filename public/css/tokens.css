@@ -1,0 +1,62 @@
+/* Design tokens — change these to retheme the entire site */
+:root {
+  /* Background layers  */
+  --color-bg:          #F8FAFC;
+  --color-bg-elevated: #FFFFFF;
+  --color-surface:     #FFFFFF;
+  --color-surface-2:   #F1F5F9;
+  --color-border:      #F8FAFC;
+  --color-border-soft: #F1F5F9;
+
+  /* Text */
+  --color-text:        #0F2238;
+  --color-text-muted:  #7A8899;
+  --color-text-soft:   #A0AEC0;
+  --color-text-inverted: #FFFFFF;
+
+  /* Accent — blue */
+  --color-accent:        #1189A7;
+  --color-accent-strong: #0D7893;
+  --color-accent-soft:   #E6F6FA;
+  --color-accent-glow:   #A7DCE8;
+
+  /* Status colors */
+  --color-live:     #12A36A;
+  --color-progress: #D97706;
+  --color-planned:  #2563EB;
+  --color-archived: #DC3F45;
+
+  /* Shadows */
+  --shadow-soft:   0 1px 2px rgba(15, 34, 56, 0.06);
+  --shadow-medium: 0 8px 24px rgba(15, 34, 56, 0.08);
+  --shadow-card:   0 18px 48px rgba(15, 34, 56, 0.10);
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 100px;
+
+  /* Spacing scale */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+
+  /* Site layout */
+  --container-max: 1200px;
+  --container-pad: var(--space-6);
+  --nav-height: 60px;
+}

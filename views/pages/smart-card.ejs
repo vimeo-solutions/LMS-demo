@@ -1,0 +1,133 @@
+<div class="page page--smart-card">
+  <div class="container">
+
+    <!-- Page header -->
+    <div class="page-hero">
+      <p class="hero__overline">Demo Projects</p>
+      <h1 class="page-hero__heading">Smart Card Preview</h1>
+      <p class="page-hero__desc">Enter a Vimeo video URL to preview its smart card, edit metadata, and manage tags and thumbnails.</p>
+    </div>
+
+<% if (locals.vimeoAuth) { %>
+
+    <!-- URL input -->
+    <div class="card">
+      <form id="urlForm" class="url-bar" novalidate>
+        <div class="url-bar__row">
+          <input
+            type="text"
+            id="urlInput"
+            class="url-bar__input"
+            placeholder="Paste a Vimeo video URL to get started…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" class="btn btn--primary" id="loadBtn">Load Video</button>
+        </div>
+        <p id="urlError" class="form-group__error hidden"></p>
+      </form>
+    </div>
+
+    <!-- Video content — hidden until a video is loaded -->
+    <section id="videoSection" class="col-2 hidden">
+
+      <!-- Left column: embed preview + transcript -->
+      <div class="stack">
+
+        <!-- Smart card preview -->
+        <div class="card panel">
+          <div class="panel__header">
+            <h2 class="panel__title">Smart Card Preview</h2>
+            <p id="cardSubtitle" class="panel__subtitle"></p>
+          </div>
+          <div class="panel__body">
+            <div class="embed embed--16-9">
+              <iframe
+                id="embedIframe"
+                src=""
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <p id="cardDescription" class="panel__desc panel__desc--clamped"></p>
+            <a id="descExpandBtn" href="#" class="expand-toggle hidden">Click to Expand »</a>
+            <a id="cardLink" href="#" target="_blank" rel="noopener noreferrer" class="external-link right">
+              <b>Open in Vimeo ↗</b>
+            </a>
+          </div>
+        </div>
+
+        <!-- Transcript (collapsible) -->
+        <div class="card panel collapsible" id="transcriptPanel">
+          <div class="collapsible__toggle" id="transcriptToggle" role="button" tabindex="0" aria-expanded="false">
+            <h2 class="panel__title">Transcript</h2>
+            <span class="collapsible__chevron" aria-hidden="true">›</span>
+          </div>
+          <div class="collapsible__body" id="transcriptBody">
+            <div id="transcriptContent" class="collapsible__content">Loading transcript…</div>
+          </div>
+        </div>
+
+      </div><!-- /.stack -->
+
+      <!-- Right column: metadata editor -->
+      <div class="card panel">
+        <div class="panel__header">
+          <h2 class="panel__title">Video Metadata</h2>
+          <p class="panel__subtitle">Changes are saved directly to Vimeo</p>
+        </div>
+        <div class="panel__body">
+
+          <div class="form-group">
+            <label class="form-group__label" for="videoTitleInput">Video Title</label>
+            <input type="text" id="videoTitleInput" class="form-group__input" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__label" for="videoDescriptionInput">Description</label>
+            <textarea id="videoDescriptionInput" class="form-group__textarea"></textarea>
+          </div>
+
+          <button id="saveMetadataBtn" class="btn btn--primary">Save Changes</button>
+
+          <hr class="form-group__divider" />
+
+          <div class="form-group">
+            <label class="form-group__label">Tags</label>
+            <div class="chip-input-row">
+              <input type="text" id="videoTagsInput" class="form-group__input" placeholder="Add a tag…" />
+              <button type="button" id="addTagBtn" class="btn btn--ghost btn--sm" title="Add tag" aria-label="Add tag">+</button>
+            </div>
+            <div id="tagsContainer" class="chip-list"></div>
+          </div>
+
+          <hr class="form-group__divider" />
+
+          <div class="form-group">
+            <label class="form-group__label">Thumbnail</label>
+            <div class="thumb-wrapper">
+              <img id="thumbnailPreview" src="" alt="Video thumbnail" class="thumb-wrapper__img hidden" />
+            </div>
+            <div class="thumb-wrapper__actions">
+              <input type="file" id="thumbnailFileInput" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff" class="hidden" />
+              <button type="button" id="selectThumbBtn" class="btn btn--ghost btn--sm">Select Image…</button>
+              <button type="button" id="uploadThumbBtn" class="btn btn--primary btn--sm right" disabled>Upload Thumbnail</button>
+            </div>
+            <p id="thumbFilename" class="form-group__hint hidden"></p>
+          </div>
+
+        </div>
+      </div><!-- /.metadata card -->
+
+    </section><!-- /#videoSection -->
+
+<% } else { %>
+    <%- include('../partials/vimeo-auth-required') %>
+<% } %>
+
+  </div><!-- /.container -->
+</div><!-- /.page -->
+
+<!-- Toast container lives outside the main flow so it can be fixed-position -->
+<div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>

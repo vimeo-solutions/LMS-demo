@@ -1,0 +1,110 @@
+/* Standalone tool styles — no dependency on the hub design system */
+:root {
+  --bg:      #070b0d;
+  --surface: #11191c;
+  --border:  #243034;
+  --text:    #f4f7f5;
+  --muted:   #9aa6a0;
+  --accent:  #56d364;
+  --radius:  10px;
+  --font:    system-ui, -apple-system, sans-serif;
+  --mono:    "SF Mono", Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.tool-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tool-header__back {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.tool-header__back:hover { color: var(--accent); }
+
+h1 { font-size: 1.1rem; font-weight: 600; }
+
+.tool-main {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+h2 { font-size: 1rem; font-weight: 600; }
+p  { font-size: 0.875rem; color: var(--muted); }
+
+textarea {
+  width: 100%;
+  min-height: 140px;
+  background: #0d1416;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 0.75rem;
+  resize: vertical;
+  outline: none;
+}
+
+textarea:focus { border-color: var(--accent); }
+
+.tool-actions { display: flex; gap: 0.5rem; }
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #070b0d;
+  transition: opacity 0.15s;
+}
+
+button:hover { opacity: 0.85; }
+
+button.secondary {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+pre {
+  background: #0d1416;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  min-height: 60px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

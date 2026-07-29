@@ -1,0 +1,108 @@
+<div class="page page--admin">
+  <div class="container">
+
+    <div class="page-hero">
+      <h1 class="page-hero__heading">API Request Monitor</h1>
+      <p class="page-hero__desc">Live log of all Vimeo API calls proxied through this server. Last 5 minutes of data. Updates every 5 seconds.</p>
+    </div>
+
+    <div class="admin-toolbar">
+      <span id="refresh-status" class="admin-toolbar__status">Loading…</span>
+      <label class="api-filter-label">
+        <input type="checkbox" id="auto-refresh" class="api-filter-checkbox" checked />
+        <span>Auto-refresh</span>
+      </label>
+    </div>
+
+    <!-- Rate limit stat tiles (populated by JS) -->
+    <div class="admin-stat-row" id="stat-row">
+      <div class="admin-stat card">
+        <div class="admin-stat__label">Rate limit</div>
+        <div class="admin-stat__value" id="stat-limit">—</div>
+        <div class="admin-stat__sub">requests / min</div>
+      </div>
+      <div class="admin-stat card">
+        <div class="admin-stat__label">Remaining</div>
+        <div class="admin-stat__value" id="stat-remaining">—</div>
+        <div class="admin-stat__sub" id="stat-reset">—</div>
+      </div>
+      <div class="admin-stat card">
+        <div class="admin-stat__label">Logged (5 min)</div>
+        <div class="admin-stat__value" id="stat-total">—</div>
+        <div class="admin-stat__sub">requests total</div>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="col-2">
+
+      <div class="card panel">
+        <div class="panel__header">
+          <h3 class="panel__title">Requests over time</h3>
+          <span class="panel__subtitle">Last 5 min · 10 s buckets</span>
+        </div>
+        <div class="panel__body">
+          <svg id="timeline-svg" viewBox="0 0 300 60" preserveAspectRatio="none"
+               style="width:100%;height:60px;display:block;overflow:visible"></svg>
+          <div class="admin-chart-labels" id="timeline-labels"></div>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <div class="panel__header">
+          <h3 class="panel__title">By source page</h3>
+          <span class="panel__subtitle" id="referer-subtitle"></span>
+        </div>
+        <div class="panel__body" id="referer-body">
+          <p class="admin-chart-empty">No data yet.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Log table -->
+    <div class="card panel" style="margin-top:var(--space-6)">
+      <div class="panel__header">
+        <h3 class="panel__title">Recent requests</h3>
+        <div style="display:flex;align-items:center;gap:var(--space-4)">
+          <span class="panel__subtitle" id="log-subtitle"></span>
+          <button class="btn btn--ghost" id="clear-btn" style="font-size:0.78rem;padding:0.2em 0.6em">Clear</button>
+        </div>
+      </div>
+      <div class="panel__body" style="padding:0">
+
+        <div class="empty-state" id="log-empty">
+          <div class="empty-state__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+              <rect x="9" y="3" width="6" height="4" rx="1"/>
+            </svg>
+          </div>
+          <p class="empty-state__heading">No requests yet</p>
+          <p class="empty-state__body">Make a Vimeo API call from any page and it will appear here.</p>
+        </div>
+
+        <div id="log-table-wrap" class="hidden">
+          <div style="overflow-x:auto;max-height:480px;overflow-y:auto">
+            <table class="table" id="log-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Method</th>
+                  <th>Path</th>
+                  <th>Source</th>
+                  <th>Status</th>
+                  <th>Duration</th>
+                  <th>Remaining</th>
+                </tr>
+              </thead>
+              <tbody id="log-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
