@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'vimeo-home',
+      name: 'vimeo-lms-demo',
       script: 'server.js',
       instances: 1,
       autorestart: true,

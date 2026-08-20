@@ -1,7 +1,7 @@
 {
-  "name": "vimeo-home",
+  "name": "vimeo-lms-demo",
   "version": "1.0.0",
-  "description": "Personal project hub for internal tools, demos, API docs, and experiments.",
+  "description": "Simulated LMS (Meridian Learning) that consumes a SCORM 1.2 package exported from Vimeo.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

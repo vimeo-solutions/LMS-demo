@@ -58,5 +58,4 @@
   /* Site layout */
   --container-max: 1200px;
   --container-pad: var(--space-6);
-  --nav-height: 60px;
 }

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title><%= title %> — Project Hub</title>
+  <title><%= title %></title>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZWPG9X6DZ"></script>
   <script>
@@ -24,17 +24,11 @@
   <link rel="stylesheet" href="/css/pages.css" />
 </head>
 <body>
-  <%- include('../partials/nav') %>
-
   <main class="main-content">
     <%- body %>
     <%# ↑ Each page template in views/pages/ renders its content here automatically. %>
-    <%# You don't add anything to this file when creating a new page. %>
   </main>
 
-  <%- include('../partials/footer') %>
-
-  <script src="/js/main.js"></script>
   <%# To load a page-specific script, pass extraScripts from the route: %>
   <%# res.render('pages/foo', { extraScripts: '<script src="/js/foo.js"><\/script>' }) %>
   <%- typeof extraScripts !== 'undefined' ? extraScripts : '' %>

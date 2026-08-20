@@ -21,8 +21,6 @@ h4 { font-size: 0.9375rem; font-weight: 600; }
 
 p  { color: var(--color-text-soft); line-height: 1.65; }
 
-.right { margin-left: auto; margin-right:0;}
-
 a:hover  { color: var(--color-accent); }
 
 code {
@@ -34,10 +32,9 @@ code {
   color: var(--color-accent);
 }
 
-/* Main content area grows to fill space above footer */
+/* Main content area fills the viewport — there is no site nav or footer */
 .main-content {
   flex: 1;
-  padding-top: var(--nav-height);
 }
 
 /* Focus ring */
