@@ -7,7 +7,9 @@ without needing a real LMS (Workday, Cornerstone, SAP SuccessFactors) in the loo
 The page acts as the SCORM 1.2 API adapter, so quiz scores and completion status stream into
 a live gradebook as the learner watches.
 
-Runs on Node.js + Express + EJS. No build step. Deploy with git pull + PM2.
+The page is plain static HTML; only the SCORM API needs a server. It runs either as a small
+Express app (EC2 + PM2) or on Netlify, where the page is served from the CDN and the API runs
+as a function. No build step beyond generating the sample list.
 
 ---
 
@@ -15,24 +17,31 @@ Runs on Node.js + Express + EJS. No build step. Deploy with git pull + PM2.
 
 ```
 vimeo-lms-demo/
-  server.js              — Express app entry point; serves the demo at /
+  server.js              — Express entry point (local + EC2/PM2)
+  netlify.toml           — Netlify build, function and redirect config
   ecosystem.config.js    — PM2 config
   .env.example           — Environment variable template
   CLAUDE.md              — Developer guide (architecture, CSS vocabulary)
 
   routes/
-    lms-demo.js          — SCORM upload, sample listing, extracted-content serving
+    lms-demo.js          — SCORM upload + stored-content serving; shared by both hosts
 
-  views/
-    layouts/main.ejs     — Outer HTML shell
-    pages/lms-demo.ejs   — The demo UI
-    pages/error.ejs      — 404 / 500 page
+  utils/
+    scorm-store.js       — Where an uploaded package is kept: Netlify Blobs or the filesystem
 
-  public/
+  netlify/functions/
+    api.js               — Wraps the router with serverless-http
+
+  scripts/
+    build-samples.js     — Regenerates public/scorm-examples/samples.json
+
+  public/                — Published as-is by Netlify; served statically by Express
+    index.html           — The demo page
+    404.html             — Not-found page
     css/                 — Six ordered layers: reset → tokens → base → layout → components → pages
     js/lms-demo.js       — SCORM API adapter + gradebook UI; no build step
     img/                 — Vimeo wordmark shown in the topbar
-    scorm-examples/      — Sample SCORM packages, one per scoring method
+    scorm-examples/      — Sample packages, one per scoring method, plus samples.json
 ```
 
 ---
@@ -48,12 +57,32 @@ npm run dev
 Then open http://localhost:3000
 
 `npm run dev` uses `node --watch` (Node 18+) — no nodemon needed. It restarts on changes to
-server-side JS (`server.js`, `routes/`) because those are in the module graph. Edits to `.ejs`
-templates and files under `public/` do **not** restart it and don't need to — EJS re-reads
-templates per request outside production, and `public/` is served statically. A hard refresh
-is enough for those.
+server-side JS (`server.js`, `routes/`, `utils/`) because those are in the module graph. Files
+under `public/` are served statically, so a hard refresh picks them up without a restart.
+
+Both `npm start` and `npm run dev` regenerate `public/scorm-examples/samples.json` first, so a
+`.zip` dropped into that folder shows up as a sample button on the next run.
+
+To exercise the Netlify path locally instead:
+
+```bash
+npx netlify dev
+```
+
+Unlinked, that falls back to filesystem storage and logs a line saying so. Run `netlify link`
+first to use real Netlify Blobs.
 
 ---
+
+## Deploying to Netlify
+
+`netlify.toml` has the whole configuration — publish `public/`, bundle `netlify/functions/`,
+and route `/api/lms-demo/*` to the function. In the Netlify UI, connect the repo and accept the
+detected settings; there are no environment variables to set.
+
+Netlify Blobs is enabled per-site with no setup. It holds the uploaded package, because each
+function invocation gets its own `/tmp` — a package written during upload would be gone by the
+time the browser asked for its files.
 
 ## Production deployment (EC2 + PM2)
 
@@ -83,9 +112,9 @@ Check status: `pm2 status` / `pm2 logs vimeo-lms-demo`
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/` | GET | The demo page |
-| `/api/lms-demo/upload` | POST | Accepts a SCORM `.zip`, extracts it, returns the launch path, mastery score and scoring method |
-| `/api/lms-demo/samples` | GET | Lists the bundled sample packages in `public/scorm-examples/` |
-| `/api/lms-demo/content/*` | GET | Serves the extracted SCORM content (same-origin, so `window.parent.API` works) |
+| `/api/lms-demo/upload` | POST | Accepts a SCORM `.zip`, stores its files, returns the launch path, mastery score and scoring method |
+| `/api/lms-demo/content/*` | GET | Serves the stored SCORM content (same-origin, so `window.parent.API` works) |
+| `/scorm-examples/samples.json` | GET | Static list of bundled samples — a file, not an endpoint |
 | `/health` | GET | `{ "status": "ok", "app": "vimeo-lms-demo", "timestamp": "..." }` |
 
 ---

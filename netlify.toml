@@ -1,0 +1,21 @@
+# Netlify deployment.
+#
+# public/ is published as-is: index.html, the CSS/JS, the Vimeo wordmark and the
+# sample SCORM zips all come off the CDN. Only the SCORM API runs as a function.
+
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  command = "npm install"
+
+[functions]
+  node_bundler = "esbuild"
+  # routes/ and utils/ live outside netlify/functions, so they have to be named
+  # explicitly or the bundler leaves them out.
+  included_files = ["routes/**", "utils/**", "public/scorm-examples/**"]
+
+# The SCORM API. Everything else is a static file, so no catch-all is needed.
+[[redirects]]
+  from = "/api/lms-demo/*"
+  to = "/.netlify/functions/api/api/lms-demo/:splat"
+  status = 200

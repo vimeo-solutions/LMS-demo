@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Pass Fail",
+    "file": "pass-fail.zip"
+  },
+  {
+    "name": "Percentage Watched",
+    "file": "percentage-watched.zip"
+  },
+  {
+    "name": "Quiz Score",
+    "file": "quiz-score.zip"
+  }
+]

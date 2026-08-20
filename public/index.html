@@ -1,4 +1,31 @@
-<div class="page page--lms-demo">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>LMS Integration Demo</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZWPG9X6DZ"></script>
+  <script>
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SZWPG9X6DZ');
+    }
+  </script>
+  <link rel="stylesheet" href="/css/reset.css" />
+  <link rel="stylesheet" href="/css/tokens.css" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+</head>
+<body>
+  <main class="main-content">
+    <div class="page page--lms-demo">
 
   <div class="lms-shell">
 
@@ -148,8 +175,7 @@
           <button class="btn btn--sm lms-retake-btn" id="lms-retake-btn" type="button">↺ Retake Course</button>
         </div>
 
-        <%# Shown only when the package reports cmi.interactions.* — Vimeo's
-            exports don't, so this section stays hidden for them. %>
+        
         <div class="hidden" id="lms-interactions">
           <div class="lms-gradebook__section-label">Quiz Responses</div>
 
@@ -185,3 +211,12 @@
 <div class="toast-container" id="toast-container">
   <div class="toast" id="toast"></div>
 </div>
+
+    
+  </main>
+
+  
+  
+  <script src="/js/lms-demo.js"></script>
+</body>
+</html>

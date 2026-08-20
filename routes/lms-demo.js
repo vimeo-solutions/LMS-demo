@@ -2,11 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const AdmZip = require('adm-zip');
-const path = require('path');
-const fs = require('fs');
-
-const CONTENT_DIR  = path.join('/tmp', 'lms-demo-content');
-const SAMPLES_DIR  = path.join(__dirname, '../public/scorm-examples');
+const store = require('../utils/scorm-store');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -33,18 +29,6 @@ function findLaunchPath(xml) {
 // the Rustici cross-domain config, not in imsmanifest.xml:
 //   contentUrl: "https://vimeo.com/lms/content/.../?scoring_algorithm=percentage
 //                &completion_threshold=15&passing_score=80&skipping_forward=false"
-function findConfigJs(dir) {
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      const hit = findConfigJs(full);
-      if (hit) return hit;
-    } else if (entry.name === 'configuration.js') {
-      return full;
-    }
-  }
-  return null;
-}
 
 // The three "Scoring method" options Vimeo's export dialog offers. Unrecognised
 // values fall through to the sentence-case fallback in scoringLabel().
@@ -65,12 +49,11 @@ function scoringLabel(algorithm) {
   return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
-function readExportSettings(contentDir) {
+function readExportSettings(configSource) {
   try {
-    const configPath = findConfigJs(contentDir);
-    if (!configPath) return {};
+    if (!configSource) return {};
 
-    const urlMatch = fs.readFileSync(configPath, 'utf-8').match(/contentUrl:\s*["']([^"']+)["']/);
+    const urlMatch = configSource.match(/contentUrl:\s*["']([^"']+)["']/);
     if (!urlMatch) return {};
 
     const params = new URL(urlMatch[1]).searchParams;
@@ -83,32 +66,35 @@ function readExportSettings(contentDir) {
   }
 }
 
-// Accept a SCORM ZIP, extract it, and return the launch path plus the export
-// settings the gradebook needs.
-router.post('/upload', upload.single('scorm'), (req, res) => {
+// Accept a SCORM ZIP, store its files, and return the launch path plus the
+// export settings the gradebook needs.
+router.post('/upload', upload.single('scorm'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded. Please select a .zip file.' });
   }
 
   try {
-    // Clear previous content and re-extract
-    fs.rmSync(CONTENT_DIR, { recursive: true, force: true });
-    fs.mkdirSync(CONTENT_DIR, { recursive: true });
-
     const zip = new AdmZip(req.file.buffer);
-    zip.extractAllTo(CONTENT_DIR, true);
+    const entries = zip.getEntries().filter((e) => !e.isDirectory);
 
-    const manifestPath = path.join(CONTENT_DIR, 'imsmanifest.xml');
-    if (!fs.existsSync(manifestPath)) {
+    const manifest = entries.find((e) => e.entryName.toLowerCase().endsWith('imsmanifest.xml'));
+    if (!manifest) {
       return res.status(400).json({ error: 'No imsmanifest.xml found. This does not appear to be a valid SCORM package.' });
     }
 
-    const manifestXml = fs.readFileSync(manifestPath, 'utf-8');
+    const manifestXml = manifest.getData().toString('utf-8');
     const launchPath = findLaunchPath(manifestXml);
 
     if (!launchPath) {
       return res.status(400).json({ error: 'Could not locate the SCO launch file in the manifest. Try re-exporting from Vimeo.' });
     }
+
+    // Everything the gradebook needs is read straight out of the archive, so the
+    // package only has to be stored for the browser to fetch its files later.
+    const config = entries.find((e) => e.entryName.toLowerCase().endsWith('rxd/configuration.js')
+      || e.entryName.toLowerCase().endsWith('configuration.js'));
+    const { scoringMethod = null, passingScore = null } =
+      readExportSettings(config && config.getData().toString('utf-8'));
 
     // Mastery score, which the client seeds into cmi.student_data.mastery_score.
     // SCORM 1.2 content only reports passed/failed when it has a mastery score to
@@ -118,9 +104,13 @@ router.post('/upload', upload.single('scorm'), (req, res) => {
     const masteryMatch =
       manifestXml.match(/<adlcp:masteryscore>\s*([^<]+?)\s*<\/adlcp:masteryscore>/i) ||
       manifestXml.match(/adlcp:masteryscore=["']\s*([^"']+?)\s*["']/i);
-
-    const { scoringMethod = null, passingScore = null } = readExportSettings(CONTENT_DIR);
     const masteryScore = masteryMatch ? masteryMatch[1].trim() : passingScore;
+
+    await store.reset();
+    for (const entry of entries) {
+      const key = store.safeKey(entry.entryName);
+      if (key) await store.put(key, entry.getData());
+    }
 
     // No course title — the UI labels every package with a fixed name.
     res.json({ launchPath, masteryScore, scoringMethod });
@@ -130,22 +120,20 @@ router.post('/upload', upload.single('scorm'), (req, res) => {
   }
 });
 
-// List available sample SCORM packages from public/scorm-examples/.
-router.get('/samples', (req, res) => {
+// Serve the stored SCORM files (same-origin, so window.parent.API resolves).
+router.get('/content/*', async (req, res) => {
+  const key = store.safeKey(req.params[0]);
+  if (!key) return res.sendStatus(400);
+
   try {
-    const files = fs.readdirSync(SAMPLES_DIR)
-      .filter(f => f.toLowerCase().endsWith('.zip'))
-      .map(f => ({
-        name: f.replace(/\.zip$/i, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-        file: f,
-      }));
-    res.json(files);
-  } catch {
-    res.json([]);
+    const body = await store.get(key);
+    if (!body) return res.sendStatus(404);
+
+    res.type(store.contentTypeFor(key)).send(body);
+  } catch (err) {
+    console.error('[lms-demo] content error:', err);
+    res.sendStatus(500);
   }
 });
-
-// Serve extracted SCORM content files (same-origin, so window.parent.API works directly).
-router.use('/content', express.static(CONTENT_DIR));
 
 module.exports = router;

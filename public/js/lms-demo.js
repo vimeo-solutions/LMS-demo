@@ -329,7 +329,7 @@ function escapeHtml(str) {
 // ── Sample courses ────────────────────────────────────────────────────────────
 async function loadSamples() {
   try {
-    const res = await fetch('/api/lms-demo/samples');
+    const res = await fetch('/scorm-examples/samples.json');
     const samples = await res.json();
     if (!samples.length) return;
 

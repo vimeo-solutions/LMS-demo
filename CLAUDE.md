@@ -1,7 +1,10 @@
 # LMS demo contributor guide
 
-Node.js + Express site serving a single EJS-templated page: a simulated LMS ("Meridian Learning")
-that consumes a SCORM 1.2 package exported from Vimeo, built for Vimeo Sales Engineering demos.
+A simulated LMS ("Meridian Learning") that consumes a SCORM 1.2 package exported from Vimeo,
+built for Vimeo Sales Engineering demos.
+
+The page is static HTML. Only the SCORM API needs a server, and it runs on two hosts from the
+same `routes/lms-demo.js`: an Express app (local + EC2/PM2) and a Netlify function.
 
 **Local dev:** `npm run dev` uses `node --watch` — just save a file and reload the browser, no restart needed.
 **Production:** PM2 (`ecosystem.config.js`) runs with `watch: false` — after `git pull`, you must run
@@ -14,7 +17,7 @@ that consumes a SCORM 1.2 package exported from Vimeo, built for Vimeo Sales Eng
 | Layer | Tool |
 |-------|------|
 | Server | Node.js + Express |
-| Templates | EJS via express-ejs-layouts |
+| Markup | Static HTML — no template engine |
 | CSS | Custom BEM, no framework |
 | Process manager | PM2 (production; `watch: false`, manual restart required) |
 | Hosting | AWS EC2 behind OpenLiteSpeed |
@@ -26,9 +29,12 @@ that consumes a SCORM 1.2 package exported from Vimeo, built for Vimeo Sales Eng
 ```
 server.js                  Express entry point; renders the demo at / and mounts the API router
 routes/lms-demo.js         SCORM 1.2 upload/runtime simulation (stores uploads in /tmp)
-views/layouts/main.ejs     Outer HTML shell; uses <%- body %> from express-ejs-layouts
-views/pages/lms-demo.ejs   The demo UI
-views/pages/error.ejs      404 / 500 page
+utils/scorm-store.js       Where an uploaded package lives: Netlify Blobs, or /tmp elsewhere
+netlify/functions/api.js   Wraps the router with serverless-http
+netlify.toml               Publish dir, function bundling, /api/lms-demo/* redirect
+scripts/build-samples.js   Regenerates public/scorm-examples/samples.json
+public/index.html          The demo page
+public/404.html            Not-found page
 public/css/                CSS load order: reset → tokens → base → layout → components → pages
 public/js/lms-demo.js      SCORM API adapter + gradebook UI (no build step)
 public/scorm-examples/     Bundled sample SCORM packages (.zip)
