@@ -31,7 +31,8 @@ vimeo-lms-demo/
   public/
     css/                 — Six ordered layers: reset → tokens → base → layout → components → pages
     js/lms-demo.js       — SCORM API adapter + gradebook UI; no build step
-    scorm-examples/      — Bundled sample SCORM packages (.zip)
+    img/                 — Vimeo wordmark shown in the topbar
+    scorm-examples/      — Sample SCORM packages, one per scoring method
 ```
 
 ---
@@ -82,7 +83,7 @@ Check status: `pm2 status` / `pm2 logs vimeo-lms-demo`
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/` | GET | The demo page |
-| `/api/lms-demo/upload` | POST | Accepts a SCORM `.zip`, extracts it, returns launch path + title + mastery score |
+| `/api/lms-demo/upload` | POST | Accepts a SCORM `.zip`, extracts it, returns the launch path, mastery score and scoring method |
 | `/api/lms-demo/samples` | GET | Lists the bundled sample packages in `public/scorm-examples/` |
 | `/api/lms-demo/content/*` | GET | Serves the extracted SCORM content (same-origin, so `window.parent.API` works) |
 | `/health` | GET | `{ "status": "ok", "app": "vimeo-lms-demo", "timestamp": "..." }` |
@@ -91,12 +92,34 @@ Check status: `pm2 status` / `pm2 logs vimeo-lms-demo`
 
 ## Running the demo
 
-1. Export a SCORM 1.2 package from a Vimeo interactive video.
+1. Export a SCORM 1.2 package from a Vimeo video, picking a **Scoring method** in the export
+   dialog.
 2. Drag the `.zip` onto the drop zone (or use **Upload SCORM** in the topbar). To demo without
-   an export handy, click one of the bundled sample courses.
-3. Play through the video and answer the quiz — Status, Score, Result, Session Time, and the
-   Quiz Responses table update live in the right-hand gradebook.
+   an export handy, click one of the bundled samples — there is one per scoring method.
+3. Play through the video and answer the quiz. The right-hand gradebook updates live.
 4. **Clear Entry** resets the gradebook; **Retake Course** appears when the learner fails.
+
+### What the gradebook shows
+
+| Row | Source |
+|-----|--------|
+| Status | `cmi.core.lesson_status` |
+| Score | `cmi.core.score.raw` / `.max` |
+| Scoring Method | `scoring_algorithm` from the package's export settings |
+| Result | Derived from `lesson_status` — Passed, Failed, or Complete |
+| Session Time Reported to Gradebook | `cmi.core.session_time`, as last reported by the content |
+
+Session time is a value the content reports, not a clock the page runs, so it stops advancing
+once the course reports completion — the same as a real LMS.
+
+Vimeo's exports send score and completion but no per-question data, so the **Quiz Responses**
+table appears only for packages that report `cmi.interactions.*`.
+
+Vimeo keeps its export settings as query params on the `contentUrl` inside
+`rxd/configuration.js`, not in `imsmanifest.xml`. The server reads the scoring method from
+there, and uses `passing_score` as the mastery score when the manifest carries no
+`<adlcp:masteryscore>` — without one, SCORM content reports `completed` instead of
+passed/failed. `CLAUDE.md` covers this in detail.
 
 ---
 
