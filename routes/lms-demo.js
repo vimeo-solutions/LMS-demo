@@ -29,7 +29,62 @@ function findLaunchPath(xml) {
   return anyHref ? anyHref[1] : null;
 }
 
-// Accept a SCORM ZIP, extract it, and return the launch path + course title.
+// Vimeo's "Export for LMS" settings live as query params on the contentUrl inside
+// the Rustici cross-domain config, not in imsmanifest.xml:
+//   contentUrl: "https://vimeo.com/lms/content/.../?scoring_algorithm=percentage
+//                &completion_threshold=15&passing_score=80&skipping_forward=false"
+function findConfigJs(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      const hit = findConfigJs(full);
+      if (hit) return hit;
+    } else if (entry.name === 'configuration.js') {
+      return full;
+    }
+  }
+  return null;
+}
+
+// The three "Scoring method" options Vimeo's export dialog offers. Unrecognised
+// values fall through to the sentence-case fallback in scoringLabel().
+const SCORING_LABELS = {
+  quiz: 'Quiz score',
+  percentage: 'Percentage watched',
+  passfail: 'Pass/fail',
+};
+
+function scoringLabel(algorithm) {
+  if (!algorithm) return null;
+
+  const key = algorithm.toLowerCase();
+  if (SCORING_LABELS[key]) return SCORING_LABELS[key];
+
+  // Sentence case, matching Vimeo's own labels ("Quiz score", not "Quiz Score").
+  const words = key.replace(/[-_]+/g, ' ').trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+function readExportSettings(contentDir) {
+  try {
+    const configPath = findConfigJs(contentDir);
+    if (!configPath) return {};
+
+    const urlMatch = fs.readFileSync(configPath, 'utf-8').match(/contentUrl:\s*["']([^"']+)["']/);
+    if (!urlMatch) return {};
+
+    const params = new URL(urlMatch[1]).searchParams;
+    return {
+      scoringMethod: scoringLabel(params.get('scoring_algorithm')),
+      passingScore: params.get('passing_score'),
+    };
+  } catch {
+    return {}; // Not a Vimeo export, or an unreadable config — omit the extras.
+  }
+}
+
+// Accept a SCORM ZIP, extract it, and return the launch path plus the export
+// settings the gradebook needs.
 router.post('/upload', upload.single('scorm'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded. Please select a .zip file.' });
@@ -55,17 +110,20 @@ router.post('/upload', upload.single('scorm'), (req, res) => {
       return res.status(400).json({ error: 'Could not locate the SCO launch file in the manifest. Try re-exporting from Vimeo.' });
     }
 
-    const titleMatch = manifestXml.match(/<title>([^<]+)<\/title>/i);
-    const title = titleMatch ? titleMatch[1].trim() : "Sample Course";
-
-    // Extract mastery score so the client can seed cmi.student_data.mastery_score.
-    // Without this, quiz-based courses default to requiring 100% correct to "pass".
+    // Mastery score, which the client seeds into cmi.student_data.mastery_score.
+    // SCORM 1.2 content only reports passed/failed when it has a mastery score to
+    // compare against; with none it settles for "completed". The manifest is the
+    // standard location, but Vimeo puts its passing_score in the export config
+    // instead, so that serves as the fallback.
     const masteryMatch =
       manifestXml.match(/<adlcp:masteryscore>\s*([^<]+?)\s*<\/adlcp:masteryscore>/i) ||
       manifestXml.match(/adlcp:masteryscore=["']\s*([^"']+?)\s*["']/i);
-    const masteryScore = masteryMatch ? masteryMatch[1].trim() : null;
 
-    res.json({ launchPath, title, masteryScore });
+    const { scoringMethod = null, passingScore = null } = readExportSettings(CONTENT_DIR);
+    const masteryScore = masteryMatch ? masteryMatch[1].trim() : passingScore;
+
+    // No course title — the UI labels every package with a fixed name.
+    res.json({ launchPath, masteryScore, scoringMethod });
   } catch (err) {
     console.error('[lms-demo] upload error:', err);
     res.status(500).json({ error: 'Failed to process the SCORM package.' });

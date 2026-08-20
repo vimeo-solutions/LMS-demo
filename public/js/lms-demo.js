@@ -52,6 +52,9 @@ window.API = {
   LMSGetDiagnostic() { return ''; },
 };
 
+// Every uploaded package is presented under this name.
+const COURSE_TITLE = 'Sample Course';
+
 // ── State ─────────────────────────────────────────────────────────────────────
 let currentLaunchPath = null;
 let courseData = {}; // LMS-seeded config (mastery_score etc.) — survives LMSInitialize resets
@@ -69,11 +72,11 @@ const courseItemTitle = document.getElementById('lms-course-item-title');
 const courseItemStatus = document.getElementById('lms-course-item-status');
 const statusChip     = document.getElementById('lms-status-chip');
 const scoreEl        = document.getElementById('lms-score');
+const scoringEl      = document.getElementById('lms-scoring-method');
 const resultEl       = document.getElementById('lms-result');
 const timeEl         = document.getElementById('lms-time');
-const noInteractions = document.getElementById('lms-no-interactions');
-const interactionsTable = document.getElementById('lms-interactions-table');
-const interactionsBody  = document.getElementById('lms-interactions-body');
+const interactionsSection = document.getElementById('lms-interactions');
+const interactionsBody    = document.getElementById('lms-interactions-body');
 const retakeArea     = document.getElementById('lms-retake-area');
 const retakeBtn      = document.getElementById('lms-retake-btn');
 const clearBtn       = document.getElementById('lms-clear-btn');
@@ -134,8 +137,8 @@ async function uploadScorm(file) {
 
     if (!res.ok) throw new Error(data.error || 'Upload failed.');
 
-    loadCourse(data.launchPath, data.title, data.masteryScore);
-    showToast(`"${data.title}" loaded successfully.`, 'success');
+    loadCourse(data.launchPath, data.masteryScore, data.scoringMethod);
+    showToast(`"${COURSE_TITLE}" loaded successfully.`, 'success');
   } catch (err) {
     courseTitle.textContent = 'No course loaded';
     showToast(err.message, 'error');
@@ -146,12 +149,16 @@ async function uploadScorm(file) {
   fileInputCenter.value = '';
 }
 
-function loadCourse(launchPath, title, masteryScore) {
+function loadCourse(launchPath, masteryScore, scoringMethod) {
   currentLaunchPath = launchPath;
 
+  // An export setting rather than runtime data, so it is set once here and left
+  // untouched by updateGradebook() and Retake Course.
+  scoringEl.textContent = scoringMethod || '—';
+
   // Update topbar and sidebar
-  courseTitle.textContent = title;
-  courseItemTitle.textContent = title;
+  courseTitle.textContent = COURSE_TITLE;
+  courseItemTitle.textContent = COURSE_TITLE;
   courseItemStatus.textContent = 'Not Started';
   noCourseEl.classList.add('hidden');
   courseItemEl.classList.remove('hidden');
@@ -191,6 +198,7 @@ function clearEntry() {
   iframe.classList.add('hidden');
   dropZone.classList.remove('hidden');
 
+  scoringEl.textContent = '—';
   courseTitle.textContent = 'No course loaded';
   courseItemTitle.textContent = '—';
   courseItemEl.classList.add('hidden');
@@ -227,11 +235,15 @@ function updateGradebook() {
   const max = data['cmi.core.score.max'] || '100';
   scoreEl.textContent = raw !== undefined ? `${raw} / ${max}` : '—';
 
-  // Result (pass/fail derived from lesson_status)
+  // Result, derived from lesson_status. "completed" is its own outcome: content
+  // with no mastery score to compare against reports completion rather than
+  // passed/failed. The em dash is reserved for states where nothing has happened.
   if (rawStatus === 'passed') {
     resultEl.innerHTML = '<span style="color:var(--color-live)">✓ Passed</span>';
   } else if (rawStatus === 'failed') {
     resultEl.innerHTML = '<span style="color:var(--color-archived)">✗ Failed</span>';
+  } else if (rawStatus === 'completed') {
+    resultEl.innerHTML = '<span style="color:var(--color-live)">✓ Complete</span>';
   } else {
     resultEl.textContent = '—';
   }
@@ -253,14 +265,12 @@ function updateInteractions() {
     if (m) indices.add(Number(m[1]));
   }
 
-  if (indices.size === 0) {
-    noInteractions.classList.remove('hidden');
-    interactionsTable.classList.add('hidden');
-    return;
-  }
+  // The section appears only when the package reports interactions. Vimeo's
+  // exports send score and lesson_status but no per-question cmi.interactions
+  // data, so it stays hidden for them.
+  interactionsSection.classList.toggle('hidden', indices.size === 0);
+  if (indices.size === 0) return;
 
-  noInteractions.classList.add('hidden');
-  interactionsTable.classList.remove('hidden');
   interactionsBody.innerHTML = '';
 
   for (const i of [...indices].sort((a, b) => a - b)) {
