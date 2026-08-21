@@ -9,7 +9,9 @@ a live gradebook as the learner watches.
 
 The page is plain static HTML; only the SCORM API needs a server. It runs either as a small
 Express app (EC2 + PM2) or on Netlify, where the page is served from the CDN and the API runs
-as a function. No build step beyond generating the sample list.
+as a function. No build step beyond generating the sample list. 
+
+Demo deployed here https://vimeo-lms-scorm-demo.netlify.app/
 
 ---
 
