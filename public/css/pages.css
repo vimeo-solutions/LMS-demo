@@ -394,7 +394,9 @@
 
 .lms-gradebook__footer {
   margin-top: auto;
-  padding: var(--space-4);
+  /* Extra room at the bottom so the floating "Powered by Netlify" badge, which
+     sits in the bottom-right corner on Netlify deploys, does not cover the text. */
+  padding: var(--space-4) var(--space-4) var(--space-20);
   font-size: 0.9rem;
   color: var(--color-text-muted);
   border-top: 1px solid var(--color-border-soft);
